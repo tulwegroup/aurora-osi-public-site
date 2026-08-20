@@ -1,0 +1,914 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Aurora OSI — Sovereign Subsurface Intelligence</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Aurora OSI delivers physics-constrained subsurface intelligence for sovereign resource mapping, national mineral strategy, hydrocarbon basin intelligence, and government-to-government resource partnerships.">
+<link rel="icon" href="/favicon.ico?v=aurora2" sizes="any">
+<link rel="icon" type="image/png" href="/branding/favicon-32x32.png?v=aurora2">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=aurora2">
+<style>
+  :root {
+    --bg:#071019; --ink:#f6f8fb; --muted:#a8b4c5; --line:#243241;
+    --panel:#0e1a25; --cyan:#33d6ff; --green:#42d58b; --amber:#ffc857;
+    --red:#ff6b6b; --nav:#09131d;
+  }
+  * { box-sizing:border-box; }
+  html, body { margin:0; min-height:100%; background:var(--bg); color:var(--ink); font-family:Inter, Segoe UI, system-ui, sans-serif; line-height:1.5; }
+  a { color:inherit; text-decoration:none; }
+  .topbar { position:sticky; top:0; z-index:10; display:flex; align-items:center; gap:22px; min-height:72px; padding:14px clamp(18px,4vw,54px); background:rgba(7,16,25,.94); border-bottom:1px solid var(--line); backdrop-filter:blur(12px); }
+  .brand { display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.08em; }
+  .brand img { height:38px; width:auto; }
+  .brand span { color:var(--cyan); }
+  nav { margin-left:auto; display:flex; align-items:center; gap:4px; flex-wrap:wrap; }
+  nav a { padding:9px 11px; border-radius:6px; color:var(--muted); font-size:13px; }
+  nav a:hover, nav a[aria-current="page"] { color:var(--ink); background:#132231; }
+  .hero { position:relative; min-height:calc(100vh - 72px); overflow:hidden; display:grid; align-items:center; padding-bottom:34px; }
+  #aoi-canvas { position:absolute; inset:0; width:100%; height:100%; background:#071019; }
+  .hero::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg, rgba(7,16,25,.96) 0%, rgba(7,16,25,.74) 42%, rgba(7,16,25,.28) 100%); pointer-events:none; }
+  .hero-inner { position:relative; z-index:2; display:grid; grid-template-columns:minmax(280px, 610px) minmax(280px, 480px); gap:32px; width:min(1180px, calc(100% - 36px)); margin:0 auto; padding:46px 0; align-items:center; }
+  .eyebrow { color:var(--cyan); text-transform:uppercase; letter-spacing:.16em; font-size:12px; margin-bottom:14px; }
+  h1 { margin:0; font-size:clamp(42px, 6vw, 78px); line-height:.98; letter-spacing:0; max-width:760px; }
+  .lead { color:#dce6f1; font-size:clamp(17px, 1.6vw, 21px); margin:22px 0 0; max-width:680px; }
+  .actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:28px; }
+  .button { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 18px; border-radius:6px; border:1px solid #466173; font-weight:750; font-size:14px; }
+  .button.primary { background:var(--cyan); color:#031018; border-color:var(--cyan); }
+  .button:hover { transform:translateY(-1px); }
+  .hero-stats { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:10px; margin-top:22px; max-width:620px; }
+  .stat { border-top:1px solid rgba(255,255,255,.22); padding-top:12px; color:var(--muted); font-size:12px; }
+  .stat strong { display:block; color:var(--ink); font-size:22px; margin-bottom:3px; }
+  .live-console { margin-top:18px; width:min(620px, 100%); background:#02070c; border:1px solid rgba(51,214,255,.34); border-radius:8px; box-shadow:0 18px 70px rgba(0,0,0,.3); overflow:hidden; }
+  .console-head { display:flex; justify-content:space-between; gap:12px; padding:9px 12px; color:#8fb0c8; font-size:11px; border-bottom:1px solid rgba(51,214,255,.2); text-transform:uppercase; letter-spacing:.1em; }
+  .console-head b { color:var(--cyan); }
+  .console-lines { padding:12px; font-family:Consolas, Monaco, monospace; font-size:12px; color:#67e8f9; min-height:96px; }
+  .console-lines div { margin-bottom:7px; white-space:normal; }
+  .console-lines span { color:var(--green); }
+  .media-panel { align-self:start; margin-top:8px; background:rgba(9,19,29,.74); border:1px solid rgba(150,190,210,.26); border-radius:8px; overflow:hidden; box-shadow:0 20px 80px rgba(0,0,0,.38); }
+  .media-head { display:flex; justify-content:space-between; gap:12px; align-items:center; padding:12px 14px; color:var(--muted); font-size:12px; border-bottom:1px solid rgba(150,190,210,.2); }
+  .media-head b { color:var(--ink); }
+  video { display:block; width:100%; aspect-ratio:16 / 9; background:#02070c; object-fit:contain; }
+  .video-note { padding:12px 14px; color:var(--muted); font-size:12px; }
+  .scan-status { display:flex; align-items:center; gap:8px; color:var(--green); font-size:12px; margin-top:18px; text-transform:uppercase; letter-spacing:.1em; }
+  .scan-status::before { content:""; width:9px; height:9px; border-radius:50%; background:var(--green); box-shadow:0 0 18px var(--green); }
+  .aoi-strip { position:relative; z-index:2; width:min(1180px, calc(100% - 36px)); margin:0 auto; display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:10px; padding:6px 0 0; }
+  .aoi-card { min-height:96px; padding:14px; background:rgba(12,27,39,.82); border:1px solid rgba(150,190,210,.25); border-radius:8px; }
+  .aoi-card b { display:block; font-size:14px; }
+  .aoi-card span { color:var(--muted); font-size:12px; }
+  main { background:#f6f8fb; color:#10202e; }
+  .section { width:min(1140px, calc(100% - 36px)); margin:0 auto; padding:54px 0; }
+  .section h2 { font-size:30px; margin:0 0 12px; }
+  .section p { color:#526170; max-width:760px; }
+  .grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-top:24px; }
+  .tile { background:#fff; border:1px solid #d9e1ea; border-radius:8px; padding:20px; min-height:178px; }
+  .tile small { color:#607080; text-transform:uppercase; letter-spacing:.1em; font-weight:800; }
+  .tile h3 { margin:12px 0 8px; }
+  .media-grid { display:grid; grid-template-columns:1.4fr .8fr; gap:16px; margin-top:24px; align-items:stretch; }
+  .feature-media { background:#fff; border:1px solid #d9e1ea; border-radius:8px; overflow:hidden; }
+  .feature-media video, .feature-media img { width:100%; height:100%; min-height:320px; object-fit:cover; display:block; background:#061019; }
+  .video-list { display:grid; gap:10px; }
+  .video-card { background:#fff; border:1px solid #d9e1ea; border-radius:8px; overflow:hidden; }
+  .video-card video { width:100%; aspect-ratio:16/9; display:block; background:#061019; }
+  .video-card div { padding:12px 14px; }
+  .video-card b { display:block; }
+  .video-card span { color:#607080; font-size:13px; }
+  .footer { background:#071019; color:var(--muted); border-top:1px solid var(--line); padding:26px clamp(18px,4vw,54px); display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; font-size:13px; }
+  @media (max-width:900px) {
+    .topbar { position:relative; align-items:flex-start; flex-direction:column; }
+    nav { margin-left:0; }
+    .hero-inner { grid-template-columns:1fr; padding-top:32px; padding-bottom:28px; }
+    .aoi-strip, .grid, .media-grid { grid-template-columns:1fr; margin-top:0; }
+    .hero-stats { grid-template-columns:1fr; }
+    .hero::after { background:rgba(7,16,25,.82); }
+  }
+
+  /* ────────────────────────────────────────────────────────────────────
+     Services & Capabilities — rotating module + supporting sections
+     Dark theme, consistent with hero. Sits between .hero and <main>.
+     ──────────────────────────────────────────────────────────────────── */
+  .dark-section { position:relative; background:var(--bg); color:var(--ink); padding:72px 0; overflow:hidden; }
+  .dark-section + .dark-section { padding-top:0; }
+  .dark-section .inner { width:min(1180px, calc(100% - 36px)); margin:0 auto; position:relative; z-index:2; }
+  .dark-section h2 { font-size:clamp(28px, 3.4vw, 40px); letter-spacing:-.01em; margin:0 0 14px; line-height:1.05; }
+  .dark-section .section-eyebrow { color:var(--cyan); text-transform:uppercase; letter-spacing:.16em; font-size:11px; margin-bottom:14px; font-weight:700; }
+  .dark-section .section-lead { color:#c5d2e1; font-size:clamp(15px, 1.3vw, 17px); max-width:780px; margin:0 0 32px; }
+
+  /* subtle radial geospatial backdrop */
+  .dark-section.with-orb::before {
+    content:""; position:absolute; inset:-30% -10% auto auto; width:780px; height:780px; pointer-events:none;
+    background:radial-gradient(circle at 50% 50%, rgba(51,214,255,.08) 0%, rgba(51,214,255,.02) 38%, transparent 60%);
+    z-index:0;
+  }
+  .dark-section.with-orb::after {
+    content:""; position:absolute; inset:auto auto -28% -10%; width:680px; height:680px; pointer-events:none;
+    background:radial-gradient(circle at 50% 50%, rgba(124,58,237,.07) 0%, rgba(124,58,237,.02) 40%, transparent 62%);
+    z-index:0;
+  }
+
+  /* ── Services rotator ───────────────────────────────────────────── */
+  .services-rotator-wrap {
+    position:relative; margin-top:8px;
+    display:grid; grid-template-columns:1.05fr .95fr; gap:34px; align-items:stretch;
+  }
+  @media (max-width:900px) { .services-rotator-wrap { grid-template-columns:1fr; gap:22px; } }
+
+  .services-stage {
+    position:relative; min-height:420px;
+    background:linear-gradient(155deg, rgba(14,26,37,.92), rgba(7,16,25,.7));
+    border:1px solid rgba(51,214,255,.22); border-radius:14px; overflow:hidden;
+    box-shadow:0 28px 90px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04);
+  }
+  /* orbital ring SVG behind active card */
+  .services-stage::before {
+    content:""; position:absolute; right:-120px; top:-120px; width:360px; height:360px; border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, rgba(51,214,255,.18) 0%, rgba(51,214,255,.05) 30%, transparent 60%);
+    pointer-events:none;
+  }
+  .services-stage::after {
+    content:""; position:absolute; right:-60px; top:-60px; width:240px; height:240px; border-radius:50%;
+    border:1px dashed rgba(51,214,255,.18); pointer-events:none;
+    animation:auroraRingSpin 32s linear infinite;
+  }
+  @keyframes auroraRingSpin { to { transform:rotate(360deg); } }
+
+  .service-card {
+    position:absolute; inset:0; padding:36px 40px; display:flex; flex-direction:column;
+    opacity:0; transform:translateY(8px); transition:opacity .55s ease, transform .55s ease;
+    pointer-events:none;
+  }
+  .service-card.active { opacity:1; transform:translateY(0); pointer-events:auto; }
+  .service-card .svc-num { font-family:Consolas, Monaco, monospace; color:var(--cyan); font-size:11px; letter-spacing:.2em; opacity:.8; margin-bottom:8px; }
+  .service-card .svc-icon { font-size:30px; line-height:1; margin-bottom:10px; }
+  .service-card h3 { margin:0 0 6px; font-size:clamp(22px, 2.6vw, 28px); letter-spacing:-.005em; }
+  .service-card .svc-tagline { color:var(--cyan); font-weight:700; font-size:13px; letter-spacing:.04em; margin-bottom:16px; text-transform:uppercase; }
+  .service-card ul { list-style:none; padding:0; margin:0 0 20px; display:grid; gap:9px; }
+  .service-card li { padding-left:22px; position:relative; color:#dce6f1; font-size:14.5px; line-height:1.5; }
+  .service-card li::before { content:"▹"; position:absolute; left:0; top:0; color:var(--cyan); font-weight:700; }
+  .service-card .svc-outcome { margin-top:auto; padding:14px 16px; border-radius:8px; background:rgba(51,214,255,.07); border-left:3px solid var(--cyan); color:#e3edf6; font-size:13px; line-height:1.55; }
+  .service-card .svc-outcome b { color:var(--ink); display:block; font-size:11px; text-transform:uppercase; letter-spacing:.14em; margin-bottom:4px; color:var(--cyan); }
+
+  .services-side {
+    display:flex; flex-direction:column; justify-content:flex-start; gap:8px;
+    padding:24px 22px; background:rgba(9,19,29,.6); border:1px solid rgba(150,190,210,.18);
+    border-radius:14px; min-height:420px;
+  }
+  .services-side h4 { margin:0 0 14px; font-size:13px; color:var(--cyan); text-transform:uppercase; letter-spacing:.14em; font-weight:700; }
+  /* Side-index buttons — full reset of native <button> styling so the
+     dark-theme palette is honoured. The default browser style would
+     otherwise paint white-on-dark (low contrast) until hover. */
+  .services-side .svc-mini {
+    display:flex; align-items:flex-start; gap:12px;
+    width:100%; padding:11px 13px;
+    background:rgba(7,16,25,.55); color:var(--ink);
+    border:1px solid rgba(150,190,210,.14); border-radius:8px;
+    cursor:pointer; text-align:left;
+    font:inherit; font-family:inherit; font-size:inherit;
+    transition:background .18s, border-color .18s, transform .18s;
+    -webkit-appearance:none; appearance:none;
+  }
+  .services-side .svc-mini:hover { background:rgba(51,214,255,.09); border-color:rgba(51,214,255,.3); transform:translateX(2px); }
+  .services-side .svc-mini:focus-visible { outline:2px solid var(--cyan); outline-offset:2px; }
+  .services-side .svc-mini.active { background:rgba(51,214,255,.13); border-color:rgba(51,214,255,.45); box-shadow:inset 0 0 0 1px rgba(51,214,255,.25); }
+  .services-side .svc-mini .icon { font-size:18px; flex:0 0 auto; line-height:1; padding-top:1px; }
+  .services-side .svc-mini .title { display:block; font-size:13.5px; font-weight:600; color:var(--ink); line-height:1.3; }
+  .services-side .svc-mini .sub { display:block; color:var(--muted); font-size:12px; margin-top:3px; line-height:1.3; }
+
+  /* dots (mobile + secondary nav) */
+  .services-dots { display:flex; gap:8px; justify-content:center; margin-top:22px; }
+  .services-dot { width:9px; height:9px; border-radius:50%; background:rgba(150,190,210,.25); border:0; padding:0; cursor:pointer; transition:background .25s, transform .25s; }
+  .services-dot.active { background:var(--cyan); transform:scale(1.3); box-shadow:0 0 12px rgba(51,214,255,.55); }
+
+  .services-progress { position:absolute; left:0; right:0; bottom:0; height:3px; background:rgba(51,214,255,.1); }
+  .services-progress > span { display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--cyan), #7c3aed); transition:width .15s linear; }
+
+  /* ── Who We Serve grid ──────────────────────────────────────────── */
+  .serve-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-top:8px; }
+  @media (max-width:900px) { .serve-grid { grid-template-columns:1fr; } }
+  .serve-card {
+    background:rgba(14,26,37,.7); border:1px solid rgba(150,190,210,.18); border-radius:12px;
+    padding:22px 22px 20px; display:flex; flex-direction:column; gap:10px;
+    transition:border-color .2s, transform .2s, background .2s;
+  }
+  .serve-card:hover { border-color:rgba(51,214,255,.5); background:rgba(14,26,37,.92); transform:translateY(-2px); }
+  .serve-card .serve-icon { font-size:24px; line-height:1; margin-bottom:2px; }
+  .serve-card h3 { font-size:17px; margin:0; }
+  .serve-card .serve-roles { color:var(--muted); font-size:13px; line-height:1.5; }
+  .serve-card .serve-uses { margin-top:8px; padding-top:12px; border-top:1px solid rgba(150,190,210,.12); }
+  .serve-card .serve-uses b { display:block; color:var(--cyan); text-transform:uppercase; letter-spacing:.12em; font-size:10.5px; margin-bottom:7px; }
+  .serve-card .serve-uses ul { list-style:none; padding:0; margin:0; display:grid; gap:5px; }
+  .serve-card .serve-uses li { padding-left:14px; position:relative; color:#dce6f1; font-size:13px; line-height:1.45; }
+  .serve-card .serve-uses li::before { content:"·"; position:absolute; left:4px; color:var(--cyan); font-weight:900; }
+
+  /* ── Why Aurora OSI pillars ─────────────────────────────────────────── */
+  .why-pillars { display:grid; grid-template-columns:repeat(5, 1fr); gap:14px; margin-top:8px; }
+  @media (max-width:900px) { .why-pillars { grid-template-columns:repeat(2, 1fr); } }
+  @media (max-width:540px) { .why-pillars { grid-template-columns:1fr; } }
+  .pillar { background:rgba(14,26,37,.55); border:1px solid rgba(150,190,210,.16); border-radius:10px; padding:18px 18px; }
+  .pillar .pill-icon { font-size:22px; margin-bottom:8px; line-height:1; }
+  .pillar h4 { margin:0 0 6px; font-size:14.5px; color:var(--ink); }
+  .pillar p { margin:0; color:var(--muted); font-size:12.5px; line-height:1.55; }
+
+  /* ── CTA strip ──────────────────────────────────────────────────── */
+  .cta-row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-top:8px; padding:24px 28px;
+    background:linear-gradient(120deg, rgba(51,214,255,.08), rgba(124,58,237,.05));
+    border:1px solid rgba(51,214,255,.25); border-radius:12px;
+  }
+  .cta-row .cta-msg { flex:1 1 280px; min-width:240px; }
+  .cta-row .cta-msg b { display:block; font-size:17px; color:var(--ink); margin-bottom:4px; }
+  .cta-row .cta-msg span { color:#c5d2e1; font-size:13.5px; }
+  .cta-row .cta-buttons { display:flex; gap:10px; flex-wrap:wrap; }
+  .cta-row .cta-buttons .button { font-size:13px; min-height:42px; padding:0 16px; }
+  #contact { scroll-margin-top:88px; padding-bottom:84px; }
+  #contact .cta-row { align-items:flex-start; }
+  #contact .cta-buttons { margin-left:auto; justify-content:flex-end; }
+
+  /* ── Compliance disclaimer ──────────────────────────────────────── */
+  .compliance-strip {
+    border-top:1px solid var(--line); padding:28px 0;
+    background:rgba(7,16,25,.6); color:var(--muted); font-size:12.5px; line-height:1.6;
+  }
+  .compliance-strip .inner { font-style:italic; }
+  .compliance-strip b { color:#c5d2e1; font-style:normal; }
+
+  /* ── Ghana Gold announcement banner ─────────────────────────────── */
+  .ghana-announce {
+    position:relative; z-index:12; display:flex; align-items:center; justify-content:center;
+    gap:14px; flex-wrap:wrap; padding:11px clamp(14px,3vw,28px); text-align:center;
+    color:#1a1402; font-size:13.5px; font-weight:600; line-height:1.35;
+    background:linear-gradient(90deg, #e0a93f 0%, #ffd97a 50%, #e0a93f 100%);
+    background-size:200% 100%; animation:gaShimmer 6s linear infinite;
+    border-bottom:1px solid rgba(0,0,0,.22); box-shadow:0 2px 18px rgba(224,169,63,.28);
+  }
+  @keyframes gaShimmer { 0% { background-position:0% 0; } 100% { background-position:200% 0; } }
+  .ghana-announce:hover { filter:brightness(1.05); }
+  .ga-pill {
+    flex:0 0 auto; background:#1a1402; color:#ffd97a; font-weight:800; letter-spacing:.14em;
+    font-size:10.5px; padding:4px 10px; border-radius:999px; text-transform:uppercase;
+    animation:gaPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes gaPulse { 0%,100% { box-shadow:0 0 0 0 rgba(26,20,2,.5); } 50% { box-shadow:0 0 0 5px rgba(26,20,2,0); } }
+  .ga-text b { font-weight:800; }
+  .ga-cta { flex:0 0 auto; display:inline-flex; align-items:center; gap:7px; font-weight:800; text-decoration:underline; text-underline-offset:3px; }
+  .ga-arrow { display:inline-block; transition:transform .2s ease; }
+  .ghana-announce:hover .ga-arrow { transform:translateX(5px); }
+  @media (max-width:640px){ .ghana-announce { font-size:12.5px; gap:9px; } .ga-text { flex-basis:100%; order:3; } }
+
+  /* ── Hero Ghana Gold CTA ─────────────────────────────────────────── */
+  .hero-cta { margin-top:30px; display:flex; flex-wrap:wrap; gap:12px; }
+  .hero-ghana-btn {
+    background:linear-gradient(90deg,#ffd97a,#f4c75a); color:#1a1402; border-color:#f4c75a;
+    font-weight:800; font-size:15px; min-height:50px; padding:0 26px;
+    box-shadow:0 10px 30px rgba(244,199,90,.28);
+  }
+  .hero-ghana-btn:hover { filter:brightness(1.05); box-shadow:0 12px 36px rgba(244,199,90,.4); }
+</style>
+</head>
+<body>
+<a class="ghana-announce" href="/ghana" aria-label="New: Ghana Gold concession opportunities">
+  <span class="ga-pill">New</span>
+  <span class="ga-text"><b>Ghana Gold</b> — discover next-generation gold concession opportunities before the market does.</span>
+  <span class="ga-cta">Explore Ghana Gold <span class="ga-arrow">&rarr;</span></span>
+</a>
+<header class="topbar">
+  <a class="brand" href="/" aria-label="Aurora OSI home">
+    <img src="/branding/aurora_logo.png" alt="">
+    <span>AURORA OSI</span>
+  </a>
+  <nav aria-label="Primary">
+    <a href="/" aria-current="page" data-i18n="nav.home">Home</a>
+    <a href="#services" data-i18n="nav.sovereign">Sovereign Focus</a>
+    <a href="/ghana" data-i18n="nav.ghana">Ghana Gold</a>
+    <a href="#who-we-serve" data-i18n="nav.clients">Clients</a>
+    <a href="#contact" data-i18n="nav.contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero" aria-label="Aurora OSI resource-system animation">
+  <canvas id="aoi-canvas"></canvas>
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow" data-i18n="landing.hero.eyebrow">Concession &amp; Deal Intelligence</div>
+      <h1 data-i18n="landing.hero.title">Discover high-value resource opportunities before the market does.</h1>
+      <p class="lead" data-i18n="landing.hero.lead">Aurora OSI identifies, ranks, and de-risks concession and open-ground opportunities across global mineral and hydrocarbon belts &mdash; turning subsurface signals into acquisition-ready deal flow.</p>
+      <div class="hero-cta">
+        <a class="button hero-ghana-btn" href="/ghana" data-i18n="landing.hero.ghanaCta">Explore Ghana Gold opportunities &rarr;</a>
+      </div>
+    </div>
+    <aside class="media-panel" aria-label="North America hydrogen and lithium opportunity video">
+      <div class="media-head"><b>North America opportunity</b><span>Hydrogen + lithium pitch</span></div>
+      <video controls preload="metadata" poster="/branding/aurora_logo.png">
+        <source src="/branding/videos/aurora-na-opportunity-60s.mp4" type="video/mp4">
+      </video>
+      <div class="video-note">Latest North America hydrogen and lithium opportunity pitch for interested buyers. French, Arabic, and English overview videos remain below.</div>
+    </aside>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SOVEREIGN INTELLIGENCE SNAPSHOT
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="dark-section with-orb" id="live-activity" aria-label="Sovereign intelligence snapshot">
+  <div class="inner">
+    <div class="actions" style="margin-top:0;">
+      <a class="button primary" href="/ghana" data-i18n="landing.snapshot.ghanaCta">Review Ghana mandate focus</a>
+      <a class="button" href="#contact" data-i18n="landing.snapshot.contactCta">Discuss sovereign engagement</a>
+    </div>
+    <div class="hero-stats" style="margin-bottom:38px;">
+      <div class="stat"><strong id="completed-scans">--</strong>Completed scans</div>
+      <div class="stat"><strong id="total-area">--</strong>Square km scanned</div>
+      <div class="stat"><strong id="active-commodities">--</strong>Mineral systems tracked</div>
+    </div>
+    <div class="section-eyebrow" data-i18n="landing.snapshot.eyebrow">Sovereign Intelligence Snapshot</div>
+    <h2 data-i18n="landing.snapshot.title">Aurora OSI converts subsurface evidence into sovereign-grade deal intelligence.</h2>
+    <p class="section-lead" data-i18n="landing.snapshot.lead">Aurora OSI packages completed intelligence artifacts into sovereign resource strategy, national mineral prioritisation, hydrocarbon basin screening, and strategic partnership dossiers. Public counters are updated from completed artifacts only; active operator and sovereign work is private.</p>
+    <div class="scan-status" id="scan-status">Updating sovereign snapshot</div>
+    <div class="live-console" aria-label="Sovereign intelligence snapshot" style="margin-top:18px;">
+      <div class="console-head">
+        <b><span id="live-pulse" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);margin-right:6px;vertical-align:middle;"></span>Intelligence Snapshot</b>
+        <span id="console-refresh">Updated from public artifacts</span>
+      </div>
+      <div class="console-lines" id="live-scans-feed">
+        <div><span>STATUS</span> :: sovereign intelligence snapshot loading</div>
+        <div><span>PRIVACY</span> :: active operator jobs are not exposed publicly</div>
+      </div>
+    </div>
+    <div class="aoi-strip" aria-label="Public offer summary" style="margin-top:20px;">
+      <div class="aoi-card"><b id="hydrogen-offers">--</b><span>Hydrogen systems represented in completed intelligence</span></div>
+      <div class="aoi-card"><b id="lithium-offers">--</b><span>Lithium brine systems represented in completed intelligence</span></div>
+      <div class="aoi-card"><b id="critical-offers">--</b><span>Critical-mineral systems represented in completed intelligence</span></div>
+      <div class="aoi-card"><b id="latest-scan">Snapshot</b><span>Updated from completed intelligence files</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SERVICES & CAPABILITIES — rotating module
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="dark-section with-orb" id="services" aria-label="Services and capabilities">
+  <div class="inner">
+    <div class="section-eyebrow" data-i18n="landing.services.eyebrow">Sovereign Engagement Focus</div>
+    <h2 data-i18n="landing.services.title">National resource intelligence for governments and strategic partners.</h2>
+    <p class="section-lead" data-i18n="landing.services.lead">Aurora OSI is now focused on sovereign mandates: country-scale resource mapping, mineral and hydrocarbon strategy, investment-grade technical dossiers, and discreet government-to-government opportunity development.</p>
+
+    <div class="services-rotator-wrap">
+      <div class="services-stage" id="services-stage" aria-live="polite" tabindex="0" aria-label="Service rotator">
+        <!-- Cards (auto-rotate; first is active by default) -->
+        <article class="service-card active" data-idx="0" role="tabpanel">
+          <div class="svc-num">01 / 07</div>
+          <div class="svc-icon">🧭</div>
+          <h3>Sovereign Resource Intelligence Mapping</h3>
+          <div class="svc-tagline">National-scale resource intelligence</div>
+          <ul>
+            <li>Map full subsurface resource potential across a national territory</li>
+            <li>Identify previously unrecognized mineral and hydrocarbon systems</li>
+            <li>Re-evaluate existing concessions and basins beyond the primary commodity</li>
+            <li>Build national resource intelligence databases and strategic resource zoning</li>
+          </ul>
+          <div class="svc-outcome"><b>Outcome</b>Governments gain visibility into hidden resource value across their entire territory, with auditable lineage on every layer.</div>
+        </article>
+
+        <article class="service-card" data-idx="1" role="tabpanel">
+          <div class="svc-num">02 / 07</div>
+          <div class="svc-icon">🛢️</div>
+          <h3>Onshore &amp; Offshore Hydrocarbon Intelligence</h3>
+          <div class="svc-tagline">Basin systems &middot; trap, seal &amp; migration</div>
+          <ul>
+            <li>Basin-scale hydrocarbon system identification</li>
+            <li>Structural trapping, seal integrity, and migration-pathway intelligence</li>
+            <li>Onshore and offshore basin mapping with frontier-basin evaluation</li>
+            <li>Pre-seismic positioning for sovereign and operator portfolios</li>
+          </ul>
+          <div class="svc-outcome"><b>Outcome</b>Early-stage hydrocarbon positioning before costly seismic campaigns &mdash; tighter prospect inventory, lower entry cost.</div>
+        </article>
+
+        <article class="service-card" data-idx="2" role="tabpanel">
+          <div class="svc-num">03 / 07</div>
+          <div class="svc-icon">🟤</div>
+          <h3>Multi-Mineral Concession Intelligence</h3>
+          <div class="svc-tagline">Secondary minerals in existing concessions</div>
+          <ul>
+            <li>Re-evaluate active concessions for hidden secondary commodities</li>
+            <li>Bauxite &rarr; gallium, scandium, REE, iron, titanium signatures</li>
+            <li>Laterite systems &rarr; nickel, cobalt, trace critical-mineral indicators</li>
+            <li>Formation-constrained mineral analysis across the concession portfolio</li>
+          </ul>
+          <div class="svc-outcome"><b>Outcome</b>Operators and governments unlock material value already inside existing assets &mdash; without new licensing exposure.</div>
+        </article>
+
+        <article class="service-card" data-idx="3" role="tabpanel">
+          <div class="svc-num">04 / 07</div>
+          <div class="svc-icon">🧠</div>
+          <h3>Exploration De-Risking &amp; Targeting</h3>
+          <div class="svc-tagline">Ranked corridors &middot; 90%+ footprint reduction</div>
+          <ul>
+            <li>Ranked target corridors with subsurface probability modeling</li>
+            <li>Voxel-based system analysis for full 3D context</li>
+            <li>Priority target corridors with calibration provenance</li>
+            <li>Fewer drill targets &middot; lower capex &middot; faster decision cycles</li>
+          </ul>
+          <div class="svc-outcome"><b>Outcome</b>Reduces field exploration footprint by over 90%, compressing the discovery curve and the ESG impact that comes with it.</div>
+        </article>
+
+        <article class="service-card" data-idx="4" role="tabpanel">
+          <div class="svc-num">05 / 07</div>
+          <div class="svc-icon">🔎</div>
+          <h3>Global Resource Deal Intelligence</h3>
+          <div class="svc-tagline">Country-scale mandates &middot; Africa and frontier regions</div>
+          <ul>
+            <li>Continuous scanning across North America, Africa, and frontier regions</li>
+            <li>Underexplored corridor discovery with tenure and policy context</li>
+            <li>Ranked strategic opportunities &middot; basin entry guidance</li>
+            <li>Off-market resource opportunities ahead of public recognition</li>
+          </ul>
+          <div class="svc-outcome"><b>Outcome</b>Clients access early-stage acquisition targets before the market re-rates them &mdash; the early-mover advantage, productised.</div>
+        </article>
+
+        <article class="service-card" data-idx="5" role="tabpanel">
+          <div class="svc-num">06 / 07</div>
+          <div class="svc-icon">📊</div>
+          <h3>Tiered Intelligence Products</h3>
+          <div class="svc-tagline">Tier 2 &middot; Tier 3 &middot; Tier 4 exclusivity</div>
+          <ul>
+            <li><b style="color:#ffc857;">Tier 2 Technical Pack</b> &mdash; ranked corridors, system modeling, no coordinates</li>
+            <li><b style="color:#ff6b6b;">Tier 3 Validation Data</b> &mdash; full coordinates, KML / GeoJSON, voxel models</li>
+            <li><b style="color:#a78bfa;">Sovereign Exclusivity</b> &mdash; controlled national or regional engagement</li>
+            <li>Calibration provenance and §11 audit lineage on every output</li>
+          </ul>
+          <div class="svc-outcome"><b>Outcome</b>Structured, transparent productisation that maps cleanly to acquisition, validation, and exclusivity decisions.</div>
+        </article>
+
+        <article class="service-card" data-idx="6" role="tabpanel">
+          <div class="svc-num">07 / 07</div>
+          <div class="svc-icon">🧬</div>
+          <h3>Strategic Advisory &amp; Custom Intelligence</h3>
+          <div class="svc-tagline">Country-specific &middot; basin prioritization</div>
+          <ul>
+            <li>Country-specific resource strategy and basin prioritization</li>
+            <li>Multi-commodity portfolio design for funds and sovereigns</li>
+            <li>Investor and operator targeting based on resource fit</li>
+            <li>Aurora OSI becomes an extension of your technical and strategic team</li>
+          </ul>
+          <div class="svc-outcome"><b>Outcome</b>Bespoke, retained-engagement intelligence for clients who need decision support beyond off-the-shelf packs.</div>
+        </article>
+
+        <div class="services-progress" aria-hidden="true"><span id="services-progress-bar"></span></div>
+      </div>
+
+      <!-- Side index (desktop) — clickable mini cards -->
+      <div class="services-side" aria-hidden="false">
+        <h4>Service Lines</h4>
+        <button class="svc-mini active" type="button" data-idx="0" role="tab" aria-selected="true">
+          <span class="icon">🧭</span>
+          <span><span class="title">Sovereign Resource Mapping</span><span class="sub">National-scale intelligence</span></span>
+        </button>
+        <button class="svc-mini" type="button" data-idx="1" role="tab">
+          <span class="icon">🛢️</span>
+          <span><span class="title">Hydrocarbon Basin Intelligence</span><span class="sub">Onshore + offshore</span></span>
+        </button>
+        <button class="svc-mini" type="button" data-idx="2" role="tab">
+          <span class="icon">🟤</span>
+          <span><span class="title">Multi-Mineral Concessions</span><span class="sub">Secondary commodities</span></span>
+        </button>
+        <button class="svc-mini" type="button" data-idx="3" role="tab">
+          <span class="icon">🧠</span>
+          <span><span class="title">Exploration De-Risking</span><span class="sub">Ranked target corridors</span></span>
+        </button>
+        <button class="svc-mini" type="button" data-idx="4" role="tab">
+          <span class="icon">🔎</span>
+          <span><span class="title">Sovereign Deal Intelligence</span><span class="sub">Strategic corridors</span></span>
+        </button>
+        <button class="svc-mini" type="button" data-idx="5" role="tab">
+          <span class="icon">📊</span>
+          <span><span class="title">Tiered Products</span><span class="sub">Tier 2 / 3 / 4</span></span>
+        </button>
+        <button class="svc-mini" type="button" data-idx="6" role="tab">
+          <span class="icon">🧬</span>
+          <span><span class="title">Strategic Advisory</span><span class="sub">Custom intelligence</span></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="services-dots" id="services-dots" role="tablist" aria-label="Service rotator dots"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     WHO WE SERVE
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="dark-section" id="who-we-serve" aria-label="Who Aurora OSI serves">
+  <div class="inner">
+    <div class="section-eyebrow">Clients</div>
+    <h2>Who we serve</h2>
+    <p class="section-lead">Aurora OSI's clients are technical, sovereign, and capital-driven. The work is now oriented around national mandates and strategic resource negotiations, not public self-serve data access.</p>
+
+    <div class="serve-grid">
+      <article class="serve-card">
+        <div class="serve-icon">🏛️</div>
+        <h3>Governments &amp; Sovereign Agencies</h3>
+        <div class="serve-roles">Ministries of Mines / Energy &middot; National resource authorities &middot; Sovereign wealth and strategic-resource units</div>
+        <div class="serve-uses">
+          <b>Use Aurora OSI to</b>
+          <ul>
+            <li>Map national resource potential across mineral and hydrocarbon systems</li>
+            <li>Increase royalties through multi-mineral concession revaluation</li>
+            <li>Attract investment with auditable, decision-grade dossiers</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="serve-card">
+        <div class="serve-icon">🌐</div>
+        <h3>Geological Surveys</h3>
+        <div class="serve-roles">National and state survey organisations &middot; Public-data custodians &middot; Research institutions</div>
+        <div class="serve-uses">
+          <b>Use Aurora OSI to</b>
+          <ul>
+            <li>Augment survey datasets with physics-constrained intelligence layers</li>
+            <li>Identify underexplored basins for follow-up campaigns</li>
+            <li>Build defensible, calibrated resource-context products</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="serve-card">
+        <div class="serve-icon">⛏️</div>
+        <h3>Mining &amp; Exploration Companies</h3>
+        <div class="serve-roles">Junior miners &middot; Prospect generators &middot; Mid-tier and major operators</div>
+        <div class="serve-uses">
+          <b>Use Aurora OSI to</b>
+          <ul>
+            <li>Identify new projects and priority target corridors</li>
+            <li>Expand existing assets with secondary-commodity intelligence</li>
+            <li>De-risk exploration with ranked corridors before drilling</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="serve-card">
+        <div class="serve-icon">🛢️</div>
+        <h3>Hydrocarbon Operators</h3>
+        <div class="serve-roles">Onshore and offshore explorers &middot; Basin-focused operators &middot; National oil companies</div>
+        <div class="serve-uses">
+          <b>Use Aurora OSI to</b>
+          <ul>
+            <li>Identify trapping systems and migration pathways pre-seismic</li>
+            <li>Expand basin positions in known and frontier provinces</li>
+            <li>Evaluate frontier basins before competitor entry</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="serve-card">
+        <div class="serve-icon">💼</div>
+        <h3>Resource-Focused Funds &amp; Family Offices</h3>
+        <div class="serve-roles">Mining and energy funds &middot; Family offices &middot; Private equity and royalty / streaming finance</div>
+        <div class="serve-uses">
+          <b>Use Aurora OSI to</b>
+          <ul>
+            <li>Access early-stage opportunities ahead of public re-rating</li>
+            <li>Evaluate acquisition targets with auditable calibration provenance</li>
+            <li>Build resource portfolios with hot-list deal flow</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="serve-card">
+        <div class="serve-icon">🌐</div>
+        <h3>Commodity Traders &amp; Strategic Industrial Groups</h3>
+        <div class="serve-roles">Traders &middot; Industrial groups &middot; Strategic investors and offtake counterparties</div>
+        <div class="serve-uses">
+          <b>Use Aurora OSI to</b>
+          <ul>
+            <li>Secure long-term resource supply through early sourcing</li>
+            <li>Identify strategic assets before they hit the public market</li>
+            <li>Underwrite offtake and royalty positions with calibrated inputs</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     WHY AURORA — five pillars
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="dark-section" aria-label="Why Aurora OSI">
+  <div class="inner">
+    <div class="section-eyebrow">Why Aurora OSI</div>
+    <h2>Differentiators that hold up to technical due diligence</h2>
+    <p class="section-lead">Five anchor points that determine whether sovereign subsurface intelligence is decision-grade or marketing-grade. Aurora OSI is engineered to the first.</p>
+
+    <div class="why-pillars">
+      <div class="pillar">
+        <div class="pill-icon">🧠</div>
+        <h4>Physics-grounded</h4>
+        <p>Every output is tied to real geophysical relationships &mdash; not statistical correlations alone.</p>
+      </div>
+      <div class="pillar">
+        <div class="pill-icon">📡</div>
+        <h4>Multi-signal</h4>
+        <p>Gravity, magnetics, SAR, hyperspectral, and seismic priors &mdash; fused, not stacked.</p>
+      </div>
+      <div class="pillar">
+        <div class="pill-icon">📒</div>
+        <h4>Structured &amp; auditable</h4>
+        <p>Decision lineage and calibration tracking on every layer. §11 audit trail by default.</p>
+      </div>
+      <div class="pillar">
+        <div class="pill-icon">⚡</div>
+        <h4>Early-mover advantage</h4>
+        <p>Identify resource systems before market recognition cycles re-rate them.</p>
+      </div>
+      <div class="pillar">
+        <div class="pill-icon">🌱</div>
+        <h4>ESG impact</h4>
+        <p>Reduce field exploration footprint by 90%+, with the carbon and capital savings that follow.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <!-- 21 May 2026: "Watch Aurora OSI in three languages." section removed in full (heading, intro paragraph, aurora-scan-3d image, EN/FR/AR videos). -->
+  <section class="section">
+    <h2>Built for sovereign teams that need traceable decisions.</h2>
+    <p>Aurora OSI now prioritizes government and strategic-resource engagements over public self-serve libraries. Public pages have been simplified so sensitive opportunity material is handled through direct mandate discussions.</p>
+    <div class="grid">
+      <div class="tile"><small>Sovereign</small><h3>National resource mapping</h3><p>Country-scale screening, basin prioritization, and mineral-system ranking for ministries and national agencies.</p></div>
+      <div class="tile"><small>Strategic</small><h3>Controlled opportunity development</h3><p>Discreet technical packages for governments, operators, and capital partners moving through direct engagement.</p></div>
+      <div class="tile"><small>Technical</small><h3>Traceable decision support</h3><p>Calibration gates, confidence classes, resource proxies, economics, and ESG outputs packaged for mandate-level decisions.</p></div>
+    </div>
+  </section>
+</main>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     CTA STRIP
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="dark-section" id="contact" aria-label="Sovereign engagement contact">
+  <div class="inner">
+    <div class="cta-row">
+      <div class="cta-msg">
+        <b data-i18n="landing.contact.title">Ready to discuss a sovereign resource mandate?</b>
+        <span data-i18n="landing.contact.lead">Send a short mandate note with the country, agency or partner, target resource system, geography, decision timeline, and the output you need from Aurora OSI.</span>
+      </div>
+      <div class="cta-buttons">
+        <a class="button primary" href="mailto:sales@aurora-osi.com?subject=Sovereign%20resource%20mandate%20discussion" data-i18n="landing.contact.email">Email mandate note</a>
+        <a class="button" href="#services" data-i18n="landing.contact.focus">Sovereign Focus</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     COMPLIANCE DISCLAIMER
+     ════════════════════════════════════════════════════════════════════ -->
+<aside class="compliance-strip" aria-label="Compliance disclosure">
+  <div class="inner">
+    <b>Compliance disclosure &mdash;</b> Aurora OSI outputs are subsurface intelligence products and do not constitute mineral resources, mineral reserves, or public disclosure reports under JORC, NI&nbsp;43-101, SK-1300, or PRMS. Independent technical validation by a Qualified Person or Competent Person is required before any public reliance, investment decision, or regulatory disclosure.
+  </div>
+</aside>
+
+<footer class="footer">
+  <span>Aurora OSI - sovereign subsurface intelligence</span>
+  <span>sales@aurora-osi.com</span>
+</footer>
+
+<script>
+(() => {
+  const canvas = document.getElementById("aoi-canvas");
+  const ctx = canvas.getContext("2d");
+  const aois = [
+    {label:"Lithium brine system", lat:52.65, lon:-113.65, color:"#42d58b", type:"LITHIUM_BRINE"},
+    {label:"Lithium brine system", lat:49.9, lon:-103.5, color:"#42d58b", type:"LITHIUM_BRINE"},
+    {label:"Lithium brine system", lat:55.2, lon:-117.0, color:"#42d58b", type:"LITHIUM_BRINE"},
+    {label:"Hydrogen system", lat:46.8, lon:-80.95, color:"#33d6ff", type:"HYDROGEN"},
+    {label:"Hydrogen system", lat:49.5, lon:-58.0, color:"#33d6ff", type:"HYDROGEN"},
+    {label:"Hydrogen system", lat:48.65, lon:-71.8, color:"#33d6ff", type:"HYDROGEN"},
+    {label:"Hydrogen system", lat:54.8, lon:-101.9, color:"#33d6ff", type:"HYDROGEN"},
+    {label:"Critical minerals", lat:53.1, lon:-86.2, color:"#ffc857", type:"CRITICAL"},
+    {label:"California brine", lat:33.25, lon:-115.65, color:"#ff6b6b", type:"LITHIUM_BRINE"}
+  ];
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.floor(canvas.clientWidth * dpr);
+    canvas.height = Math.floor(canvas.clientHeight * dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  function project(lat, lon) {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    const x = ((lon + 126) / 70) * w;
+    const y = ((58 - lat) / 27) * h + h * .12;
+    return [x, y];
+  }
+  function drawMap(t) {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle = "#071019";
+    ctx.fillRect(0,0,w,h);
+    ctx.strokeStyle = "rgba(94,128,150,.18)";
+    ctx.lineWidth = 1;
+    for (let i=0;i<12;i++) {
+      const x = (i/11)*w;
+      ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke();
+    }
+    for (let i=0;i<8;i++) {
+      const y = (i/7)*h;
+      ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke();
+    }
+    ctx.strokeStyle = "rgba(180,220,235,.28)";
+    ctx.lineWidth = 2;
+    const coast = [[57,-125],[53,-123],[49,-124],[45,-122],[39,-123],[34,-119],[32,-117],[34,-111],[39,-105],[44,-96],[49,-92],[53,-83],[51,-70],[49,-59]];
+    ctx.beginPath();
+    coast.forEach(([lat,lon], i) => {
+      const [x,y] = project(lat,lon);
+      if (i === 0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+    ctx.fillStyle = "rgba(255,255,255,.52)";
+    ctx.font = "12px Segoe UI, sans-serif";
+    ctx.fillText("CANADA", w*.56, h*.25);
+    ctx.fillText("CALIFORNIA", w*.18, h*.77);
+    aois.forEach((a, i) => {
+      const [x,y] = project(a.lat,a.lon);
+      const pulse = (Math.sin(t/600 + i*.75) + 1) / 2;
+      ctx.strokeStyle = a.color;
+      ctx.globalAlpha = .22 + pulse*.32;
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(x,y,18+pulse*26,0,Math.PI*2); ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = a.color;
+      ctx.beginPath(); ctx.arc(x,y,4.5,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = "rgba(246,248,251,.86)";
+      ctx.font = "12px Segoe UI, sans-serif";
+      if (w > 760) ctx.fillText(a.label, x+9, y-8);
+    });
+  }
+  function frame(t) { drawMap(t); requestAnimationFrame(frame); }
+  window.addEventListener("resize", resize);
+  resize(); requestAnimationFrame(frame);
+
+  const fmt = new Intl.NumberFormat("en-US", {maximumFractionDigits: 0});
+  function setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  }
+  function commodityCount(stats) {
+    return Object.keys(stats || {}).filter(k => k !== "UNKNOWN").length;
+  }
+  fetch("/api/public/scan-activity")
+    .then(r => r.ok ? r.json() : Promise.reject(new Error("activity unavailable")))
+    .then(data => {
+      const commodities = data.commodities || {};
+      setText("completed-scans", fmt.format(data.completed_scans || 0));
+      setText("total-area", fmt.format(data.total_area_km2 || 0));
+      setText("active-commodities", fmt.format(commodityCount(commodities)));
+      setText("hydrogen-offers", `${data.offers?.hydrogen_aois || 0} hydrogen systems`);
+      setText("lithium-offers", `${data.offers?.lithium_brine_aois || 0} lithium brine systems`);
+      setText("critical-offers", `${data.offers?.critical_mineral_aois || 0} critical mineral systems`);
+      setText("latest-scan", data.latest_completed_at ? "Updated" : "Snapshot");
+      setText("scan-status", `Snapshot ${data.started_label || "from completed intelligence artifacts"}`);
+      renderSnapshotLines(data);
+    })
+    .catch(() => {
+      setText("completed-scans", "Snapshot");
+      setText("total-area", "Private");
+      setText("active-commodities", "Multi");
+      setText("hydrogen-offers", "Hydrogen systems");
+      setText("lithium-offers", "Lithium brine systems");
+      setText("critical-offers", "Critical minerals");
+      setText("scan-status", "Public snapshot temporarily unavailable");
+      renderSnapshotLines(null);
+    });
+
+  function escapeHtml(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, ch => (
+      {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]
+    ));
+  }
+  function renderSnapshotLines(data) {
+    var root = document.getElementById("live-scans-feed");
+    if (!root) return;
+    var pulse = document.getElementById("live-pulse");
+    if (pulse) pulse.style.background = data ? "var(--green)" : "var(--muted)";
+    if (!data) {
+      root.innerHTML =
+        '<div><span>STATUS</span> :: public snapshot unavailable</div>' +
+        '<div><span>PRIVACY</span> :: active operator jobs remain private</div>';
+      return;
+    }
+    var commodities = Object.keys(data.commodities || {}).filter(k => k !== "UNKNOWN").slice(0, 6);
+    var commodityLine = commodities.length ? commodities.map(escapeHtml).join(", ") : "multi-mineral systems";
+    root.innerHTML =
+      '<div><span>STATUS</span> :: public intelligence snapshot online</div>' +
+      '<div><span>ARTIFACTS</span> :: ' + fmt.format(data.completed_scans || 0) + ' completed scans represented across ' + fmt.format(data.total_area_km2 || 0) + ' km&sup2;</div>' +
+      '<div><span>SYSTEMS</span> :: ' + commodityLine + '</div>' +
+      '<div><span>PRIVACY</span> :: active operator jobs and sovereign workstreams are not exposed publicly</div>';
+    setText("console-refresh", "Updated " + new Date().toLocaleTimeString());
+  }
+})();
+</script>
+<script>
+/* ────────────────────────────────────────────────────────────────────
+   Services rotator — auto-advance with smooth fade, dot + side-index
+   navigation, pause on hover/focus, keyboard arrow navigation, progress
+   bar that drains across the active card's lifetime.
+   ──────────────────────────────────────────────────────────────────── */
+(function () {
+  var stage = document.getElementById('services-stage');
+  if (!stage) return;
+  var cards   = stage.querySelectorAll('.service-card');
+  var minis   = document.querySelectorAll('.services-side .svc-mini');
+  var dotsBox = document.getElementById('services-dots');
+  var bar     = document.getElementById('services-progress-bar');
+  if (!cards.length || !dotsBox) return;
+
+  var INTERVAL_MS = 5500;          // time per card
+  var TICK_MS     = 80;             // progress-bar redraw cadence
+  var idx = 0;
+  var timer = null;
+  var elapsed = 0;
+  var paused  = false;
+
+  // Build dot indicators (one per card)
+  for (var i = 0; i < cards.length; i++) {
+    var dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'services-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('data-idx', String(i));
+    dot.setAttribute('aria-label', 'Service ' + (i + 1));
+    dotsBox.appendChild(dot);
+  }
+  var dots = dotsBox.querySelectorAll('.services-dot');
+
+  function setActive(next) {
+    if (next === idx) return;
+    cards[idx].classList.remove('active');
+    dots[idx].classList.remove('active');
+    if (minis[idx]) {
+      minis[idx].classList.remove('active');
+      minis[idx].setAttribute('aria-selected', 'false');
+    }
+    idx = (next + cards.length) % cards.length;
+    cards[idx].classList.add('active');
+    dots[idx].classList.add('active');
+    if (minis[idx]) {
+      minis[idx].classList.add('active');
+      minis[idx].setAttribute('aria-selected', 'true');
+    }
+    elapsed = 0;
+    if (bar) bar.style.width = '0%';
+  }
+
+  function tick() {
+    if (paused) return;
+    elapsed += TICK_MS;
+    if (bar) bar.style.width = Math.min(100, (elapsed / INTERVAL_MS) * 100) + '%';
+    if (elapsed >= INTERVAL_MS) setActive(idx + 1);
+  }
+
+  function start() { if (timer) return; timer = setInterval(tick, TICK_MS); }
+  function stop()  { if (timer) { clearInterval(timer); timer = null; } }
+
+  // Pause on hover / keyboard focus, resume on leave / blur
+  function pauseOn()  { paused = true;  }
+  function pauseOff() { paused = false; }
+  stage.addEventListener('mouseenter', pauseOn);
+  stage.addEventListener('mouseleave', pauseOff);
+  stage.addEventListener('focusin',    pauseOn);
+  stage.addEventListener('focusout',   pauseOff);
+
+  // Pause when tab is in background — saves cycles, also prevents
+  // the rotator from racing if the tab was backgrounded for hours
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { paused = true; }
+    else                 { paused = false; elapsed = 0; }
+  });
+
+  // Dot click → jump
+  for (var d = 0; d < dots.length; d++) {
+    dots[d].addEventListener('click', function (ev) {
+      var n = Number(ev.currentTarget.getAttribute('data-idx') || 0);
+      setActive(n);
+    });
+  }
+
+  // Side-index click → jump
+  for (var m = 0; m < minis.length; m++) {
+    minis[m].addEventListener('click', function (ev) {
+      var n = Number(ev.currentTarget.getAttribute('data-idx') || 0);
+      setActive(n);
+    });
+  }
+
+  // Keyboard arrow navigation while focused
+  stage.addEventListener('keydown', function (ev) {
+    if (ev.key === 'ArrowRight') { setActive(idx + 1); ev.preventDefault(); }
+    if (ev.key === 'ArrowLeft')  { setActive(idx - 1); ev.preventDefault(); }
+  });
+
+  start();
+})();
+</script>
+<script src="/site_i18n.js?v=sovereign4"></script>
+</body>
+</html>

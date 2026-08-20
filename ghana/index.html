@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Aurora OSI Concession Intelligence™ — Ghana Gold Opportunities</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Aurora OSI Concession Intelligence helps exploration companies, investors, and sovereign stakeholders identify, prioritize, and evaluate gold concession opportunities across Ghana's premier mineral districts before committing capital.">
+<link rel="icon" href="/favicon.ico?v=aurora2" sizes="any">
+<link rel="icon" type="image/png" href="/branding/favicon-32x32.png?v=aurora2">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=aurora2">
+<style>
+  :root {
+    --bg:#0a0c08; --ink:#f8f6ef; --muted:#bcae93; --line:#33301f;
+    --panel:#15140d; --gold:#f4c75a; --gold-deep:#c9962f; --green:#42d58b;
+    --amber:#ffc857; --red:#ff6b6b; --nav:#0c0e08;
+  }
+  * { box-sizing:border-box; }
+  html, body { margin:0; min-height:100%; background:var(--bg); color:var(--ink); font-family:Inter, Segoe UI, system-ui, sans-serif; line-height:1.5; }
+  a { color:inherit; text-decoration:none; }
+  .topbar { position:sticky; top:0; z-index:10; display:flex; align-items:center; gap:22px; min-height:72px; padding:14px clamp(18px,4vw,54px); background:rgba(10,12,8,.94); border-bottom:1px solid var(--line); backdrop-filter:blur(12px); }
+  .brand { display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.08em; }
+  .brand img { height:38px; width:auto; }
+  .brand span { color:var(--gold); }
+  nav { margin-left:auto; display:flex; align-items:center; gap:4px; flex-wrap:wrap; }
+  nav a { padding:9px 11px; border-radius:6px; color:var(--muted); font-size:13px; }
+  nav a:hover, nav a[aria-current="page"] { color:var(--ink); background:#241f12; }
+  .nav-item { position:relative; display:inline-flex; align-items:center; }
+  .nav-trigger { display:inline-flex; align-items:center; gap:6px; padding:9px 11px; border-radius:6px; color:var(--muted); font-size:13px; background:transparent; border:0; font:inherit; cursor:pointer; }
+  .nav-trigger::after { content:""; width:0; height:0; border-left:4px solid transparent; border-right:4px solid transparent; border-top:5px solid currentColor; opacity:.85; }
+  .nav-trigger[aria-current="page"], .nav-item:hover .nav-trigger, .nav-trigger:focus-visible { color:var(--ink); background:#241f12; outline:0; }
+  .submenu { position:absolute; right:0; top:calc(100% + 8px); min-width:210px; padding:8px; background:rgba(10,12,8,.98); border:1px solid rgba(188,174,147,.24); border-radius:8px; box-shadow:0 18px 48px rgba(0,0,0,.42); display:none; z-index:20; }
+  .submenu a { display:block; padding:10px 11px; color:#d9caa8; white-space:nowrap; }
+  .submenu a:hover { color:var(--ink); background:#241f12; }
+  .nav-item:hover .submenu, .nav-item:focus-within .submenu { display:block; }
+
+  /* ── Hero ─────────────────────────────────────────────────────────── */
+  .hero { position:relative; min-height:calc(100vh - 72px); overflow:hidden; display:grid; align-items:center; padding-bottom:34px; }
+  #ghana-canvas { position:absolute; inset:0; width:100%; height:100%; background:#0a0c08; }
+  .hero::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg, rgba(10,12,8,.96) 0%, rgba(10,12,8,.74) 44%, rgba(10,12,8,.30) 100%); pointer-events:none; }
+  .hero-inner { position:relative; z-index:2; width:min(1180px, calc(100% - 36px)); margin:0 auto; padding:46px 0; }
+  .eyebrow { color:var(--gold); text-transform:uppercase; letter-spacing:.16em; font-size:12px; margin-bottom:14px; font-weight:700; }
+  h1 { margin:0; font-size:clamp(38px, 5.4vw, 70px); line-height:1.0; letter-spacing:-.01em; max-width:880px; }
+  .hero .lead { color:#e7dcc2; font-size:clamp(17px, 1.6vw, 21px); margin:22px 0 0; max-width:720px; }
+  .actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:30px; }
+  .button { display:inline-flex; align-items:center; justify-content:center; min-height:46px; padding:0 20px; border-radius:6px; border:1px solid #5a4d2c; font-weight:750; font-size:14px; transition:transform .15s, background .2s; }
+  .button.primary { background:var(--gold); color:#1a1402; border-color:var(--gold); }
+  .button:hover { transform:translateY(-1px); }
+  .hero-stats { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:14px; margin-top:34px; max-width:680px; }
+  .stat { border-top:1px solid rgba(244,199,90,.32); padding-top:12px; color:var(--muted); font-size:12px; }
+  .stat strong { display:block; color:var(--ink); font-size:22px; margin-bottom:3px; }
+
+  /* ── Sections (dark) ──────────────────────────────────────────────── */
+  .section { position:relative; padding:72px 0; overflow:hidden; }
+  .section .inner { width:min(1140px, calc(100% - 36px)); margin:0 auto; position:relative; z-index:2; }
+  .section-eyebrow { color:var(--gold); text-transform:uppercase; letter-spacing:.16em; font-size:11px; margin-bottom:14px; font-weight:700; }
+  .section h2 { font-size:clamp(28px, 3.4vw, 40px); letter-spacing:-.01em; margin:0 0 14px; line-height:1.06; }
+  .section .lead { color:#d3c8ad; font-size:clamp(15px, 1.3vw, 17px); max-width:800px; margin:0 0 12px; }
+  .section.alt { background:#0d0f09; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .section.with-orb::before {
+    content:""; position:absolute; inset:-30% -10% auto auto; width:760px; height:760px; pointer-events:none;
+    background:radial-gradient(circle at 50% 50%, rgba(244,199,90,.10) 0%, rgba(244,199,90,.02) 40%, transparent 62%); z-index:0;
+  }
+
+  .two-col { display:grid; grid-template-columns:1.05fr .95fr; gap:34px; align-items:start; margin-top:8px; }
+  @media (max-width:900px){ .two-col { grid-template-columns:1fr; gap:22px; } }
+
+  .check-list { list-style:none; padding:0; margin:18px 0 0; display:grid; gap:11px; }
+  .check-list li { padding-left:26px; position:relative; color:#e7dcc2; font-size:15px; line-height:1.5; }
+  .check-list li::before { content:"◆"; position:absolute; left:0; top:1px; color:var(--gold); font-size:12px; }
+
+  .note-card { background:rgba(244,199,90,.06); border:1px solid rgba(244,199,90,.22); border-left:3px solid var(--gold); border-radius:10px; padding:22px 24px; color:#e7dcc2; font-size:14.5px; line-height:1.6; }
+  .note-card b { color:var(--gold); display:block; text-transform:uppercase; letter-spacing:.12em; font-size:11px; margin-bottom:8px; }
+
+  /* ── Problem strip ────────────────────────────────────────────────── */
+  .problem-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; margin-top:8px; }
+  @media (max-width:760px){ .problem-grid { grid-template-columns:1fr 1fr; } }
+  .problem-card { background:rgba(21,20,13,.7); border:1px solid var(--line); border-radius:10px; padding:20px 18px; }
+  .problem-card .pc-icon { font-size:22px; margin-bottom:8px; }
+  .problem-card b { display:block; font-size:14.5px; margin-bottom:4px; }
+  .problem-card span { color:var(--muted); font-size:12.5px; line-height:1.5; }
+
+  /* ── Advantage / dimensions ───────────────────────────────────────── */
+  .dim-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-top:8px; }
+  @media (max-width:900px){ .dim-grid { grid-template-columns:1fr; } }
+  .dim-card { background:rgba(21,20,13,.65); border:1px solid rgba(188,174,147,.18); border-radius:12px; padding:24px 22px; transition:border-color .2s, transform .2s, background .2s; }
+  .dim-card:hover { border-color:rgba(244,199,90,.5); background:rgba(21,20,13,.92); transform:translateY(-2px); }
+  .dim-card .dim-icon { font-size:26px; line-height:1; margin-bottom:12px; }
+  .dim-card h3 { margin:0 0 8px; font-size:17px; }
+  .dim-card p { margin:0; color:var(--muted); font-size:13.5px; line-height:1.55; }
+
+  /* ── Tier cards ───────────────────────────────────────────────────── */
+  .tier-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin-top:8px; }
+  @media (max-width:900px){ .tier-grid { grid-template-columns:1fr; } }
+  .tier-card { display:flex; flex-direction:column; background:linear-gradient(165deg, rgba(21,20,13,.92), rgba(10,12,8,.7)); border:1px solid rgba(188,174,147,.2); border-radius:14px; padding:26px 24px; box-shadow:0 22px 70px rgba(0,0,0,.4); }
+  .tier-card.featured { border-color:rgba(244,199,90,.5); box-shadow:0 24px 80px rgba(201,150,47,.18); }
+  .tier-tag { font-family:Consolas, Monaco, monospace; font-size:11px; letter-spacing:.18em; color:var(--gold); text-transform:uppercase; margin-bottom:10px; }
+  .tier-card h3 { margin:0 0 6px; font-size:21px; }
+  .tier-card .tier-for { color:var(--muted); font-size:13px; margin-bottom:18px; }
+  .tier-card ul { list-style:none; padding:0; margin:0 0 4px; display:grid; gap:9px; }
+  .tier-card li { padding-left:22px; position:relative; color:#e7dcc2; font-size:13.5px; line-height:1.45; }
+  .tier-card li::before { content:"▹"; position:absolute; left:0; color:var(--gold); font-weight:700; }
+
+  /* ── Country / juniors ────────────────────────────────────────────── */
+  .country-row { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+  .country-chip { display:inline-flex; align-items:center; gap:9px; padding:9px 16px; border-radius:999px; border:1px solid rgba(188,174,147,.28); background:rgba(21,20,13,.6); font-size:13.5px; color:#e7dcc2; }
+  .country-chip::before { content:""; width:7px; height:7px; border-radius:50%; background:var(--gold); box-shadow:0 0 8px rgba(244,199,90,.6); }
+
+  /* ── Beyond licences ──────────────────────────────────────────────── */
+  .beyond-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:14px; margin-top:8px; }
+  @media (max-width:760px){ .beyond-grid { grid-template-columns:1fr; } }
+  .beyond-card { background:rgba(21,20,13,.65); border:1px solid rgba(188,174,147,.18); border-radius:12px; padding:22px 22px; }
+  .beyond-card h3 { margin:0 0 6px; font-size:16px; color:var(--gold); }
+  .beyond-card p { margin:0; color:var(--muted); font-size:13.5px; line-height:1.55; }
+
+  /* ── Process flow ─────────────────────────────────────────────────── */
+  .flow { display:grid; grid-template-columns:repeat(6, 1fr); gap:10px; margin-top:8px; counter-reset:step; }
+  @media (max-width:900px){ .flow { grid-template-columns:repeat(2, 1fr); } }
+  @media (max-width:520px){ .flow { grid-template-columns:1fr; } }
+  .flow-step { position:relative; background:rgba(21,20,13,.6); border:1px solid rgba(188,174,147,.18); border-radius:10px; padding:38px 16px 18px; }
+  .flow-step::before { counter-increment:step; content:"0" counter(step); position:absolute; top:14px; left:16px; font-family:Consolas, Monaco, monospace; color:var(--gold); font-size:13px; letter-spacing:.1em; }
+  .flow-step b { display:block; font-size:14px; line-height:1.35; }
+
+  /* ── Who we work with ─────────────────────────────────────────────── */
+  .serve-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; margin-top:8px; }
+  @media (max-width:900px){ .serve-grid { grid-template-columns:1fr 1fr; } }
+  @media (max-width:540px){ .serve-grid { grid-template-columns:1fr; } }
+  .serve-card { background:rgba(21,20,13,.65); border:1px solid rgba(188,174,147,.18); border-radius:12px; padding:22px 20px; transition:border-color .2s, transform .2s; }
+  .serve-card:hover { border-color:rgba(244,199,90,.5); transform:translateY(-2px); }
+  .serve-card .serve-icon { font-size:24px; margin-bottom:8px; }
+  .serve-card h3 { margin:0 0 6px; font-size:16px; }
+  .serve-card p { margin:0; color:var(--muted); font-size:13px; line-height:1.5; }
+
+  /* ── CTA + form ───────────────────────────────────────────────────── */
+  .cta-band { background:linear-gradient(120deg, rgba(244,199,90,.10), rgba(201,150,47,.05)); border-top:1px solid rgba(244,199,90,.22); border-bottom:1px solid rgba(244,199,90,.22); }
+  .form-card { background:rgba(13,15,9,.9); border:1px solid rgba(188,174,147,.22); border-radius:14px; padding:30px clamp(22px,3vw,38px); margin-top:10px; }
+  .form-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:18px 22px; margin-top:20px; }
+  @media (max-width:680px){ .form-grid { grid-template-columns:1fr; } }
+  .field { display:flex; flex-direction:column; gap:7px; }
+  .field.full { grid-column:1 / -1; }
+  .field label { font-size:12px; text-transform:uppercase; letter-spacing:.1em; color:var(--gold); font-weight:700; }
+  .field input, .field select, .field textarea {
+    background:#0a0c08; border:1px solid rgba(188,174,147,.3); border-radius:8px; color:var(--ink);
+    padding:12px 14px; font:inherit; font-size:14px;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { outline:2px solid var(--gold); outline-offset:1px; border-color:var(--gold); }
+  .field textarea { resize:vertical; min-height:84px; }
+  .form-actions { display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-top:22px; }
+  .form-note { color:var(--muted); font-size:12.5px; max-width:420px; }
+
+  /* ── Compliance + footer ──────────────────────────────────────────── */
+  .compliance-strip { border-top:1px solid var(--line); padding:26px 0; background:rgba(10,12,8,.7); color:var(--muted); font-size:12.5px; line-height:1.65; }
+  .compliance-strip .inner { width:min(1140px, calc(100% - 36px)); margin:0 auto; font-style:italic; }
+  .compliance-strip b { color:#d3c8ad; font-style:normal; }
+  .footer { background:#0a0c08; color:var(--muted); border-top:1px solid var(--line); padding:26px clamp(18px,4vw,54px); display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; font-size:13px; }
+  .footer a:hover { color:var(--gold); }
+  @media (max-width:760px) {
+    .topbar { position:relative; align-items:flex-start; flex-direction:column; }
+    nav { margin-left:0; width:100%; align-items:flex-start; }
+    .nav-item { flex-direction:column; align-items:flex-start; }
+    .submenu { position:static; display:flex; flex-wrap:wrap; gap:4px; min-width:0; padding:4px 0 0 8px; border:0; box-shadow:none; background:transparent; }
+    .submenu a { padding:7px 9px; white-space:normal; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/" aria-label="Aurora OSI home">
+    <img src="/branding/aurora_logo.png" alt="">
+    <span>AURORA OSI</span>
+  </a>
+  <nav aria-label="Primary">
+    <a href="/" data-i18n="nav.home">Home</a>
+    <a href="/#services" data-i18n="nav.sovereign">Sovereign Focus</a>
+    <div class="nav-item">
+      <button class="nav-trigger" type="button" aria-current="page" aria-haspopup="true" aria-expanded="false" data-i18n="nav.ghana">Ghana Gold</button>
+      <div class="submenu" aria-label="Ghana Gold sections">
+        <a href="/ghana" data-i18n="ghana.nav.overview">Overview</a>
+        <a href="#packs" data-i18n="ghana.nav.packs">Intelligence Packs</a>
+        <a href="#advantage" data-i18n="ghana.nav.workflow">Workflow</a>
+        <a href="#contact" data-i18n="ghana.nav.contact">Ghana Contact</a>
+      </div>
+    </div>
+    <a href="/#who-we-serve" data-i18n="nav.clients">Clients</a>
+    <a href="/#contact" data-i18n="nav.contact">Contact</a>
+  </nav>
+</header>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     HERO
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="hero" aria-label="Ghana gold concession intelligence">
+  <canvas id="ghana-canvas"></canvas>
+  <div class="hero-inner">
+    <div class="eyebrow" data-i18n="ghana.hero.eyebrow">Aurora OSI Concession Intelligence™</div>
+    <h1 data-i18n="ghana.hero.title">Discover Ghana's next generation gold opportunities before the market does.</h1>
+    <p class="lead" data-i18n="ghana.hero.lead">Africa's largest gold producer continues to attract exploration capital from companies around the world. Aurora OSI provides the intelligence layer that helps exploration companies identify, prioritize, and evaluate concession opportunities before committing capital.</p>
+    <div class="actions">
+      <a class="button primary" href="#contact" data-i18n="ghana.hero.contactCta">Discuss Ghana mandate engagement</a>
+      <a class="button" href="#packs" data-i18n="ghana.hero.packsCta">View Intelligence Packs</a>
+      <a class="button" href="#advantage" data-i18n="ghana.hero.workflowCta">How Aurora OSI Works</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><strong>Belt-scale</strong>Coverage across Ghana's proven gold belts</div>
+      <div class="stat"><strong>Multi-dimensional</strong>Fertility, structure &amp; district context</div>
+      <div class="stat"><strong>Acquisition-ready</strong>Screening to drill-target pathway</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     WHY GHANA
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="section with-orb" aria-label="Why Ghana">
+  <div class="inner">
+    <div class="section-eyebrow" data-i18n="ghana.why.eyebrow">Why Ghana</div>
+    <h2 data-i18n="ghana.why.title">Africa's leading gold jurisdiction</h2>
+    <p class="lead" data-i18n="ghana.why.lead">Ghana has established itself as one of the world's most attractive gold exploration destinations. International junior exploration companies continue to acquire, option, farm into, and joint venture highly prospective licences across the country. The opportunity remains significant — the challenge is knowing where to focus.</p>
+    <div class="two-col">
+      <ul class="check-list">
+        <li>Long and well-documented mining history</li>
+        <li>Stable mining legislation and an established permitting framework</li>
+        <li>Proven world-class gold belts</li>
+        <li>Existing mining infrastructure</li>
+        <li>Multiple producing mines and development projects</li>
+        <li>An active exploration and transaction market</li>
+      </ul>
+      <div class="note-card">
+        <b>Market context</b>
+        Many market participants continue to view gold as a strategic long-term asset amid global monetary uncertainty. In that environment, well-positioned ground in an established jurisdiction can be among the most contested assets in the sector.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     THE PROBLEM
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="section alt" aria-label="The problem">
+  <div class="inner">
+    <div class="section-eyebrow">The Problem</div>
+    <h2>Most opportunities are never properly screened</h2>
+    <p class="lead">Evaluating thousands of permit areas using traditional methods can require months of geological review and significant technical expenditure before a company even knows where to begin. Many opportunities are overlooked entirely.</p>
+    <div class="problem-grid">
+      <div class="problem-card"><div class="pc-icon">⏳</div><b>Licences expire</b><span>Exploration licences lapse on a rolling basis.</span></div>
+      <div class="problem-card"><div class="pc-icon">↩️</div><b>Permits surrendered</b><span>Prospecting licences are relinquished and become available.</span></div>
+      <div class="problem-card"><div class="pc-icon">🗺️</div><b>Ground opens up</b><span>Positions become available through commercial transactions.</span></div>
+      <div class="problem-card"><div class="pc-icon">✨</div><b>New opportunities emerge</b><span>Fresh prospective areas appear faster than they can be assessed.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     THE AURORA ADVANTAGE
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="section with-orb" id="advantage" aria-label="The Aurora OSI advantage">
+  <div class="inner">
+    <div class="section-eyebrow" data-i18n="ghana.advantage.eyebrow">The Aurora OSI Advantage</div>
+    <h2 data-i18n="ghana.advantage.title">From manual review to a data-driven intelligence workflow</h2>
+    <p class="lead" data-i18n="ghana.advantage.lead">Aurora OSI evaluates concession opportunities across multiple dimensions so capital is focused where the technical evidence is strongest.</p>
+    <div class="dim-grid">
+      <div class="dim-card">
+        <div class="dim-icon">🟡</div>
+        <h3>Ore Fertility Potential</h3>
+        <p>Identification of geological environments capable of supporting economically significant mineral systems.</p>
+      </div>
+      <div class="dim-card">
+        <div class="dim-icon">🧭</div>
+        <h3>Structural Prospectivity</h3>
+        <p>Assessment of deep-seated structures, corridors, fault systems, and fluid pathways associated with gold mineralization.</p>
+      </div>
+      <div class="dim-card">
+        <div class="dim-icon">🧬</div>
+        <h3>Mineral System Development</h3>
+        <p>Evaluation of the geological conditions required for gold concentration and preservation.</p>
+      </div>
+      <div class="dim-card">
+        <div class="dim-icon">📍</div>
+        <h3>District-Scale Context</h3>
+        <p>Understanding how each permit relates to known producing mines, historical workings, artisanal activity, and regional mineral belts.</p>
+      </div>
+      <div class="dim-card">
+        <div class="dim-icon">📊</div>
+        <h3>Opportunity Ranking</h3>
+        <p>Prioritization of available licences based on geological potential and strategic attractiveness.</p>
+      </div>
+      <div class="dim-card" style="display:flex;align-items:center;">
+        <div class="note-card" style="border:0;background:transparent;border-left:3px solid var(--gold);padding:8px 0 8px 18px;">
+          <b>Methodology note</b>
+          Aurora OSI's resource proxy methodology has demonstrated strong correlation with published resource figures at multiple known mining districts.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     CONCESSION INTELLIGENCE PACKS
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="section alt" id="packs" aria-label="Concession intelligence packs">
+  <div class="inner">
+    <div class="section-eyebrow">Concession Intelligence Packs</div>
+    <h2>Ready-to-use products for every stage of the decision</h2>
+    <p class="lead">Aurora OSI provides investors and exploration companies with structured concession intelligence products, from first-pass market entry through advanced due diligence.</p>
+    <div class="tier-grid">
+      <div class="tier-card">
+        <div class="tier-tag">Tier 1</div>
+        <h3>Opportunity Screening Pack</h3>
+        <div class="tier-for">For companies evaluating market entry.</div>
+        <ul>
+          <li>Available permit screening</li>
+          <li>Regional geological assessment</li>
+          <li>Ore fertility ranking</li>
+          <li>Structural prospectivity assessment</li>
+          <li>Opportunity shortlist</li>
+          <li>Strategic acquisition recommendations</li>
+        </ul>
+      </div>
+      <div class="tier-card featured">
+        <div class="tier-tag">Tier 2</div>
+        <h3>Acquisition Intelligence Pack</h3>
+        <div class="tier-for">For companies considering licence acquisition.</div>
+        <ul>
+          <li>Detailed permit analysis</li>
+          <li>Geological risk assessment</li>
+          <li>Mineral system evaluation</li>
+          <li>Competitive landscape review</li>
+          <li>Acquisition prioritization matrix</li>
+          <li>Exploration potential assessment</li>
+        </ul>
+      </div>
+      <div class="tier-card">
+        <div class="tier-tag">Tier 3</div>
+        <h3>Aurora OSI Transformation Pack</h3>
+        <div class="tier-for">For companies that have secured a concession or are conducting advanced due diligence.</div>
+        <ul>
+          <li>Ultra-high-resolution permit analysis</li>
+          <li>Target ranking and prioritization</li>
+          <li>Subsurface intelligence dataset</li>
+          <li>Structural interpretation</li>
+          <li>Mineral system architecture assessment</li>
+          <li>Resource proxy evaluation methodology</li>
+          <li>Drill target prioritization framework</li>
+          <li>Interactive digital twin deliverables</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note-card" style="margin-top:18px;">
+      The Transformation Pack provides a significantly more detailed understanding of the concession before major exploration expenditures are committed.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     GLOBAL JUNIORS ACTIVE IN GHANA
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="section with-orb" aria-label="Global juniors active in Ghana">
+  <div class="inner">
+    <div class="section-eyebrow">A Global Transaction Market</div>
+    <h2>International juniors are already active in Ghana</h2>
+    <p class="lead">Through acquisitions, earn-in agreements, joint ventures, strategic partnerships, and licence transactions, international companies continue to establish positions across prospective gold districts. Ghana continues to attract exploration capital from companies headquartered in:</p>
+    <div class="country-row">
+      <span class="country-chip">Canada</span>
+      <span class="country-chip">Australia</span>
+      <span class="country-chip">United States</span>
+      <span class="country-chip">United Kingdom</span>
+      <span class="country-chip">Europe</span>
+      <span class="country-chip">West Africa</span>
+    </div>
+    <p class="lead" style="margin-top:24px;">Aurora OSI helps identify where future opportunities may emerge.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     BEYOND AVAILABLE LICENCES
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="section alt" aria-label="Beyond available licences">
+  <div class="inner">
+    <div class="section-eyebrow">Beyond Available Licences</div>
+    <h2>Where opportunity may emerge next</h2>
+    <p class="lead">Aurora OSI also assists clients in identifying opportunities that are not visible through a simple permit search.</p>
+    <div class="beyond-grid">
+      <div class="beyond-card">
+        <h3>Expired Exploration Licences</h3>
+        <p>Areas that may have become available following licence expiry or surrender.</p>
+      </div>
+      <div class="beyond-card">
+        <h3>Open Ground Opportunities</h3>
+        <p>Prospective areas not currently under active licence.</p>
+      </div>
+      <div class="beyond-card">
+        <h3>Strategic Acquisition Targets</h3>
+        <p>Privately held permits that may be suitable for acquisition, partnership, or earn-in arrangements.</p>
+      </div>
+      <div class="beyond-card">
+        <h3>District Consolidation Opportunities</h3>
+        <p>Opportunities to consolidate fragmented land positions across highly prospective districts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     FROM LICENCE OPPORTUNITY TO EXPLORATION STRATEGY
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="section with-orb" aria-label="From licence opportunity to exploration strategy">
+  <div class="inner">
+    <div class="section-eyebrow">A Structured Pathway</div>
+    <h2>From licence opportunity to exploration strategy</h2>
+    <p class="lead">Aurora OSI's role does not end at opportunity identification. We support clients through a structured pathway from concession identification to drill planning.</p>
+    <div class="flow">
+      <div class="flow-step"><b>Opportunity Screening</b></div>
+      <div class="flow-step"><b>Permit Evaluation</b></div>
+      <div class="flow-step"><b>Acquisition Intelligence</b></div>
+      <div class="flow-step"><b>High-Resolution Subsurface Analysis</b></div>
+      <div class="flow-step"><b>Target Prioritization</b></div>
+      <div class="flow-step"><b>Exploration Strategy Development</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     WHO WE WORK WITH
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="section alt" aria-label="Who we work with">
+  <div class="inner">
+    <div class="section-eyebrow">Who We Work With</div>
+    <h2>Partners across the exploration value chain</h2>
+    <div class="serve-grid">
+      <div class="serve-card">
+        <div class="serve-icon">⛏️</div>
+        <h3>Junior Exploration Companies</h3>
+        <p>Seeking new growth opportunities in proven gold jurisdictions.</p>
+      </div>
+      <div class="serve-card">
+        <div class="serve-icon">💼</div>
+        <h3>Private Investment Groups</h3>
+        <p>Evaluating mineral exploration opportunities.</p>
+      </div>
+      <div class="serve-card">
+        <div class="serve-icon">🤝</div>
+        <h3>Mining Entrepreneurs</h3>
+        <p>Looking to secure strategic ground positions.</p>
+      </div>
+      <div class="serve-card">
+        <div class="serve-icon">🏛️</div>
+        <h3>Sovereign &amp; Institutional Stakeholders</h3>
+        <p>Interested in concession portfolio assessment and resource development planning.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     CONTACT
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="section cta-band" id="contact" aria-label="Sovereign Ghana engagement contact">
+  <div class="inner">
+    <div class="section-eyebrow" data-i18n="ghana.contact.eyebrow">Sovereign Engagement</div>
+    <h2 data-i18n="ghana.contact.title">Discuss Ghana gold intelligence as a mandate-level engagement.</h2>
+    <p class="lead" data-i18n="ghana.contact.lead">For governments, operators, and strategic capital partners, Aurora OSI handles Ghana opportunity work through direct engagement rather than public brief requests. Send a short mandate note with geography, resource focus, decision timeline, and required output.</p>
+
+    <form class="form-card" id="brief-form" novalidate>
+      <h3 style="margin:0;font-size:18px;" data-i18n="ghana.contact.formTitle">Ghana mandate discussion</h3>
+      <div class="form-grid">
+        <div class="field">
+          <label for="f-company">Company</label>
+          <input id="f-company" name="company" type="text" placeholder="Company name" autocomplete="organization">
+        </div>
+        <div class="field">
+          <label for="f-name">Contact name</label>
+          <input id="f-name" name="contact" type="text" placeholder="Your name" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="f-email">Work email</label>
+          <input id="f-email" name="email" type="email" placeholder="name@company.com" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="f-jurisdiction">Jurisdiction of interest</label>
+          <input id="f-jurisdiction" name="jurisdiction" type="text" value="Ghana" placeholder="Ghana">
+        </div>
+        <div class="field">
+          <label for="f-commodity">Commodity focus</label>
+          <select id="f-commodity" name="commodity">
+            <option>Gold</option>
+            <option>Gold + associated minerals</option>
+            <option>Multi-mineral</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-budget">Mandate scale</label>
+          <select id="f-budget" name="budget">
+            <option value="">Select a scale</option>
+            <option>Country-scale screening</option>
+            <option>District or belt prioritization</option>
+            <option>Concession-level diligence</option>
+            <option>Strategic partnership support</option>
+            <option>Prefer to discuss</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-timeline">Decision timeline</label>
+          <select id="f-timeline" name="timeline">
+            <option value="">Select a timeline</option>
+            <option>Immediate (0–3 months)</option>
+            <option>Near-term (3–6 months)</option>
+            <option>This year (6–12 months)</option>
+            <option>Exploratory / no fixed timeline</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-pack">Output of interest</label>
+          <select id="f-pack" name="pack">
+            <option value="">No preference yet</option>
+            <option>Tier 1 — Opportunity Screening</option>
+            <option>Tier 2 — Acquisition Intelligence</option>
+            <option>Tier 3 — Aurora OSI Transformation</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label for="f-notes">Anything else we should know?</label>
+          <textarea id="f-notes" name="notes" placeholder="Target districts, current positions, strategic objectives…"></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="button primary" type="submit" data-i18n="ghana.contact.submit">Send mandate note</button>
+        <span class="form-note" id="form-note" data-i18n="ghana.contact.note">We'll respond with how Aurora OSI can support the mandate. Your details are sent directly to our team.</span>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     COMPLIANCE
+     ════════════════════════════════════════════════════════════════════ -->
+<aside class="compliance-strip" aria-label="Compliance disclosure">
+  <div class="inner">
+    <b>Compliance disclosure —</b> Aurora OSI outputs are subsurface intelligence and concession-screening products. They do not constitute mineral resources, mineral reserves, valuations, investment advice, or public disclosure reports under JORC, NI&nbsp;43-101, SK-1300, or PRMS. Statements regarding market conditions reflect general observations and are not forecasts. Independent technical validation by a Qualified Person or Competent Person is required before any public reliance, acquisition decision, or regulatory disclosure.
+  </div>
+</aside>
+
+<footer class="footer">
+  <span>Aurora OSI — sovereign subsurface intelligence</span>
+  <span><a href="/">Home</a> / <a href="/ghana">Ghana Gold</a> / <a href="#contact">Contact</a> / sales@aurora-osi.com</span>
+</footer>
+
+<script>
+/* ────────────────────────────────────────────────────────────────────
+   Ghana gold-belt backdrop — stylized national outline with pulsing
+   AOI markers over the major Birimian gold belts. Canvas-only, no
+   external data dependency so the page renders standalone.
+   ──────────────────────────────────────────────────────────────────── */
+(function () {
+  var canvas = document.getElementById("ghana-canvas");
+  if (!canvas) return;
+  var ctx = canvas.getContext("2d");
+
+  // Approximate Ghana national outline (lon, lat), clockwise from SW coast.
+  var outline = [
+    [-3.11,5.13],[-2.0,4.92],[-1.0,5.05],[0.0,5.78],[0.5,5.7],[1.06,5.99],[1.19,6.1],
+    [0.9,7.4],[0.5,8.2],[0.36,9.5],[0.0,10.5],[-0.07,11.1],
+    [-0.9,11.0],[-1.6,11.0],[-2.83,11.0],
+    [-2.75,10.4],[-2.9,9.5],[-3.2,8.5],[-3.0,7.5],[-3.24,6.5],[-3.11,5.13]
+  ];
+
+  // Major gold belts / districts (approx centroids).
+  var aois = [
+    {label:"Ashanti Belt · Obuasi", lat:6.20, lon:-1.67},
+    {label:"Tarkwa district",       lat:5.30, lon:-1.99},
+    {label:"Asankrangwa Belt",      lat:5.80, lon:-2.10},
+    {label:"Sefwi-Bibiani Belt",    lat:6.45, lon:-2.32},
+    {label:"Bui Belt",              lat:8.00, lon:-2.25},
+    {label:"Bole-Nangodi Belt",     lat:9.95, lon:-1.05},
+    {label:"Wa-Lawra Belt",         lat:10.55, lon:-2.75},
+    {label:"Kibi-Winneba Belt",     lat:6.05, lon:-0.55}
+  ];
+
+  // Bounds for projection (padded around the country).
+  var LON_MIN = -3.7, LON_MAX = 1.7, LAT_MIN = 4.3, LAT_MAX = 11.6;
+
+  function resize() {
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.floor(canvas.clientWidth * dpr);
+    canvas.height = Math.floor(canvas.clientHeight * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function project(lat, lon) {
+    var w = canvas.clientWidth, h = canvas.clientHeight;
+    // Shift the country toward the right so hero text sits over open space.
+    var padL = w * 0.30, drawW = w * 0.66;
+    var padT = h * 0.08, drawH = h * 0.84;
+    var x = padL + ((lon - LON_MIN) / (LON_MAX - LON_MIN)) * drawW;
+    var y = padT + ((LAT_MAX - lat) / (LAT_MAX - LAT_MIN)) * drawH;
+    return [x, y];
+  }
+
+  function draw(t) {
+    var w = canvas.clientWidth, h = canvas.clientHeight;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = "#0a0c08";
+    ctx.fillRect(0, 0, w, h);
+
+    // graticule
+    ctx.strokeStyle = "rgba(140,124,82,.14)";
+    ctx.lineWidth = 1;
+    for (var i = 0; i < 12; i++) { var gx = (i / 11) * w; ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h); ctx.stroke(); }
+    for (var j = 0; j < 8; j++) { var gy = (j / 7) * h; ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke(); }
+
+    // country fill + outline
+    ctx.beginPath();
+    outline.forEach(function (p, k) {
+      var xy = project(p[1], p[0]);
+      if (k === 0) ctx.moveTo(xy[0], xy[1]); else ctx.lineTo(xy[0], xy[1]);
+    });
+    ctx.closePath();
+    ctx.fillStyle = "rgba(244,199,90,.05)";
+    ctx.fill();
+    ctx.strokeStyle = "rgba(244,199,90,.45)";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // label
+    var lbl = project(7.6, -1.2);
+    ctx.fillStyle = "rgba(248,246,239,.5)";
+    ctx.font = "600 13px Segoe UI, sans-serif";
+    if (w > 760) ctx.fillText("GHANA", lbl[0], lbl[1]);
+
+    // AOI markers
+    aois.forEach(function (a, i) {
+      var xy = project(a.lat, a.lon);
+      var pulse = (Math.sin(t / 620 + i * 0.8) + 1) / 2;
+      ctx.strokeStyle = "#f4c75a";
+      ctx.globalAlpha = 0.22 + pulse * 0.34;
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(xy[0], xy[1], 12 + pulse * 20, 0, Math.PI * 2); ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = "#f4c75a";
+      ctx.beginPath(); ctx.arc(xy[0], xy[1], 4, 0, Math.PI * 2); ctx.fill();
+      if (w > 820) {
+        ctx.fillStyle = "rgba(248,246,239,.82)";
+        ctx.font = "12px Segoe UI, sans-serif";
+        ctx.fillText(a.label, xy[0] + 9, xy[1] - 7);
+      }
+    });
+  }
+
+  function frame(t) { draw(t); requestAnimationFrame(frame); }
+  window.addEventListener("resize", resize);
+  resize();
+  requestAnimationFrame(frame);
+})();
+
+/* ── Mandate-contact form. Posts to the existing Aurora OSI backend and
+      falls back to a prepared email if the endpoint is unavailable. ── */
+(function () {
+  var form = document.getElementById("brief-form");
+  if (!form) return;
+  var note = document.getElementById("form-note");
+  var submitBtn = form.querySelector('button[type="submit"]');
+
+  function mailtoFallback(d, email) {
+    var lines = [
+      "Company: " + (d.get("company") || "—"),
+      "Contact: " + (d.get("contact") || "—"),
+      "Email: " + email,
+      "Jurisdiction: " + (d.get("jurisdiction") || "—"),
+      "Commodity: " + (d.get("commodity") || "—"),
+      "Mandate scale: " + (d.get("budget") || "—"),
+      "Decision timeline: " + (d.get("timeline") || "—"),
+      "Output of interest: " + (d.get("pack") || "—"),
+      "",
+      "Notes:",
+      (d.get("notes") || "—").toString()
+    ];
+    var subject = "Ghana sovereign mandate discussion — " + (d.get("company") || "New enquiry");
+    window.location.href = "mailto:sales@aurora-osi.com"
+      + "?subject=" + encodeURIComponent(subject)
+      + "&body=" + encodeURIComponent(lines.join("\n"));
+  }
+
+  form.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var d = new FormData(form);
+    var email = (d.get("email") || "").toString().trim();
+    if (!email || email.indexOf("@") === -1) {
+      if (note) { note.textContent = "Please add a valid work email so we can respond."; note.style.color = "var(--red)"; }
+      var ef = document.getElementById("f-email"); if (ef) ef.focus();
+      return;
+    }
+    var payload = {
+      company: d.get("company") || "",
+      contact: d.get("contact") || "",
+      email: email,
+      jurisdiction: d.get("jurisdiction") || "",
+      commodity: d.get("commodity") || "",
+      budget: d.get("budget") || "",
+      timeline: d.get("timeline") || "",
+      pack: d.get("pack") || "",
+      notes: d.get("notes") || ""
+    };
+    if (note) { note.textContent = "Sending your request…"; note.style.color = "var(--muted)"; }
+    if (submitBtn) { submitBtn.disabled = true; }
+
+    fetch("/api/public/ghana-brief", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r); })
+      .then(function () {
+        if (note) {
+          note.textContent = "Thank you — your mandate note has been sent to the Aurora OSI team. We'll be in touch shortly.";
+          note.style.color = "var(--green)";
+        }
+        form.reset();
+      })
+      .catch(function () {
+        if (note) {
+          note.textContent = "We couldn't reach our server — opening your email client so your mandate note still reaches us…";
+          note.style.color = "var(--gold)";
+        }
+        mailtoFallback(d, email);
+      })
+      .finally(function () { if (submitBtn) { submitBtn.disabled = false; } });
+  });
+})();
+</script>
+<script src="/site_i18n.js?v=sovereign4"></script>
+</body>
+</html>
