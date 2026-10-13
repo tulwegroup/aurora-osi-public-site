@@ -309,35 +309,13 @@
      ════════════════════════════════════════════════════════════════════ -->
 <section class="dark-section with-orb" id="live-activity" aria-label="Sovereign intelligence snapshot">
   <div class="inner">
-    <div class="actions" style="margin-top:0;">
+    <div class="actions" style="margin-top:0;margin-bottom:38px;">
       <a class="button primary" href="/ghana" data-i18n="landing.snapshot.ghanaCta">Review Ghana mandate focus</a>
       <a class="button" href="#contact" data-i18n="landing.snapshot.contactCta">Discuss sovereign engagement</a>
     </div>
-    <div class="hero-stats" style="margin-bottom:38px;">
-      <div class="stat"><strong id="completed-scans">--</strong>Completed scans</div>
-      <div class="stat"><strong id="total-area">--</strong>Square km scanned</div>
-      <div class="stat"><strong id="active-commodities">--</strong>Mineral systems tracked</div>
-    </div>
     <div class="section-eyebrow" data-i18n="landing.snapshot.eyebrow">Sovereign Intelligence Snapshot</div>
     <h2 data-i18n="landing.snapshot.title">Aurora OSI converts subsurface evidence into sovereign-grade deal intelligence.</h2>
-    <p class="section-lead" data-i18n="landing.snapshot.lead">Aurora OSI packages completed intelligence artifacts into sovereign resource strategy, national mineral prioritisation, hydrocarbon basin screening, and strategic partnership dossiers. Public counters are updated from completed artifacts only; active operator and sovereign work is private.</p>
-    <div class="scan-status" id="scan-status">Updating sovereign snapshot</div>
-    <div class="live-console" aria-label="Sovereign intelligence snapshot" style="margin-top:18px;">
-      <div class="console-head">
-        <b><span id="live-pulse" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);margin-right:6px;vertical-align:middle;"></span>Intelligence Snapshot</b>
-        <span id="console-refresh">Updated from public artifacts</span>
-      </div>
-      <div class="console-lines" id="live-scans-feed">
-        <div><span>STATUS</span> :: sovereign intelligence snapshot loading</div>
-        <div><span>PRIVACY</span> :: active operator jobs are not exposed publicly</div>
-      </div>
-    </div>
-    <div class="aoi-strip" aria-label="Public offer summary" style="margin-top:20px;">
-      <div class="aoi-card"><b id="hydrogen-offers">--</b><span>Hydrogen systems represented in completed intelligence</span></div>
-      <div class="aoi-card"><b id="lithium-offers">--</b><span>Lithium brine systems represented in completed intelligence</span></div>
-      <div class="aoi-card"><b id="critical-offers">--</b><span>Critical-mineral systems represented in completed intelligence</span></div>
-      <div class="aoi-card"><b id="latest-scan">Snapshot</b><span>Updated from completed intelligence files</span></div>
-    </div>
+    <p class="section-lead" data-i18n="landing.snapshot.lead">Aurora OSI packages completed intelligence artifacts into sovereign resource strategy, national mineral prioritisation, hydrocarbon basin screening, and strategic partnership dossiers. Active operator and sovereign work remains private.</p>
   </div>
 </section>
 
@@ -747,64 +725,6 @@
   window.addEventListener("resize", resize);
   resize(); requestAnimationFrame(frame);
 
-  const fmt = new Intl.NumberFormat("en-US", {maximumFractionDigits: 0});
-  function setText(id, value) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = value;
-  }
-  function commodityCount(stats) {
-    return Object.keys(stats || {}).filter(k => k !== "UNKNOWN").length;
-  }
-  fetch("/api/public/scan-activity")
-    .then(r => r.ok ? r.json() : Promise.reject(new Error("activity unavailable")))
-    .then(data => {
-      const commodities = data.commodities || {};
-      setText("completed-scans", fmt.format(data.completed_scans || 0));
-      setText("total-area", fmt.format(data.total_area_km2 || 0));
-      setText("active-commodities", fmt.format(commodityCount(commodities)));
-      setText("hydrogen-offers", `${data.offers?.hydrogen_aois || 0} hydrogen systems`);
-      setText("lithium-offers", `${data.offers?.lithium_brine_aois || 0} lithium brine systems`);
-      setText("critical-offers", `${data.offers?.critical_mineral_aois || 0} critical mineral systems`);
-      setText("latest-scan", data.latest_completed_at ? "Updated" : "Snapshot");
-      setText("scan-status", `Snapshot ${data.started_label || "from completed intelligence artifacts"}`);
-      renderSnapshotLines(data);
-    })
-    .catch(() => {
-      setText("completed-scans", "Snapshot");
-      setText("total-area", "Private");
-      setText("active-commodities", "Multi");
-      setText("hydrogen-offers", "Hydrogen systems");
-      setText("lithium-offers", "Lithium brine systems");
-      setText("critical-offers", "Critical minerals");
-      setText("scan-status", "Public snapshot temporarily unavailable");
-      renderSnapshotLines(null);
-    });
-
-  function escapeHtml(s) {
-    return String(s == null ? "" : s).replace(/[&<>"']/g, ch => (
-      {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]
-    ));
-  }
-  function renderSnapshotLines(data) {
-    var root = document.getElementById("live-scans-feed");
-    if (!root) return;
-    var pulse = document.getElementById("live-pulse");
-    if (pulse) pulse.style.background = data ? "var(--green)" : "var(--muted)";
-    if (!data) {
-      root.innerHTML =
-        '<div><span>STATUS</span> :: public snapshot unavailable</div>' +
-        '<div><span>PRIVACY</span> :: active operator jobs remain private</div>';
-      return;
-    }
-    var commodities = Object.keys(data.commodities || {}).filter(k => k !== "UNKNOWN").slice(0, 6);
-    var commodityLine = commodities.length ? commodities.map(escapeHtml).join(", ") : "multi-mineral systems";
-    root.innerHTML =
-      '<div><span>STATUS</span> :: public intelligence snapshot online</div>' +
-      '<div><span>ARTIFACTS</span> :: ' + fmt.format(data.completed_scans || 0) + ' completed scans represented across ' + fmt.format(data.total_area_km2 || 0) + ' km&sup2;</div>' +
-      '<div><span>SYSTEMS</span> :: ' + commodityLine + '</div>' +
-      '<div><span>PRIVACY</span> :: active operator jobs and sovereign workstreams are not exposed publicly</div>';
-    setText("console-refresh", "Updated " + new Date().toLocaleTimeString());
-  }
 })();
 </script>
 <script>
